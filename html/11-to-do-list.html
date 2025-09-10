@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>to-do-list practvice</title>
+        <style>
+            body
+            {
+                font-family:Arial;
+            }
+            .todo-grid,
+            .todo-input-grid
+            {
+                display:grid;
+                grid-template-columns: 200px 150px 100px;
+                grid-gap:10px;
+                column-gap:10px;
+                row-gap:10px; 
+                align-items:center;
+            }
+            .todo-input-grid
+            {
+                margin-bottom:10px;
+                align-items:stretch;
+            }
+            .name-input,
+            .due-date-input
+            {
+                font-size:15px;
+                padding:6px;
+            }
+            .add-todo-button
+            {
+                color:white;
+                background-color:rgb(11, 163, 11);
+                font-size:15px;
+                border:none;
+                cursor:pointer;
+            }
+            .delete-todo-button
+            {
+                color:white;
+                background-color:darkred;
+                padding:6px 27px;
+                font-size:15px;
+                cursor:pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <p>Todo List</p>
+        <div class="todo-input-grid">
+            <input placeholder="Todo name" class="js-name-input name-input" onkeydown="
+            hashkeyevent(event)">
+            <input type="date" class="js-due-date-input due-date-input">
+          
+        </div>
+        <div class="js-todo-list todo-grid"></div>
+        <script>
+            const todoList = [
+                {
+                    name:'make dinenr',
+                    duedate:'2022-12-22'
+                },
+                {
+                    name:'wash dishes',
+                    duedate:'2020-11-45'
+                }
+            ];
+            
+            rendertodolist();
+            function rendertodolist()
+            {
+                let todoListHTML= '';
+                todoList.forEach((todoobject,index)=>
+                {
+                    const {name,duedate}=todoobject;
+                    const html=`
+                            <div>${name}</div> 
+                            <div>${duedate}</div>
+                            <div>
+                            <button class="delete-todo-button js-delete-todo-button">Delete</button>
+                            </div>
+                        `;
+                    todoListHTML=todoListHTML+html;
+                })
+               
+               
+                document.querySelector('.js-todo-list')
+                .innerHTML=todoListHTML;
+                document.querySelectorAll('.js-delete-todo-button')
+                .forEach((deleteButton,index)=>
+                {
+                    deleteButton.addEventListener('click',()=>
+                    {
+                        todoList.splice(index,1);
+                        rendertodolist();
+                    });
+                    
+                });
+            }
+            function hashkeyevent(event)
+            {
+                if(event.key==="Enter")
+                {
+                    addTodo();
+                }
+            }
+            document.querySelector('.js-add-todobutton')
+            .addEventListener('click',()=>{
+                addTodo();
+            });
+            function addTodo()
+            {
+               let inputelement= document.querySelector('.js-name-input');
+                let name=inputelement . value;
+                const dateinputelement=document.querySelector('.js-due-date-input');
+                const duedate=dateinputelement.value;
+                todoList.push(
+                    {
+                        name,
+                        duedate
+                    }
+                );
+               
+                inputelement.value='';
+                rendertodolist();
+            }
+        </script>
+    </body>
+</html>
